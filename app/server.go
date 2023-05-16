@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"strings"
 
 	// Uncomment this block to pass the first stage
 	"net"
@@ -33,16 +34,16 @@ func main() {
 
 func pingCommand(conn net.Conn) {
 	// incoming request
-	fmt.Println("incoming request")
 	buffer := make([]byte, 1024)
 	_, err := conn.Read(buffer)
 
 	if err != nil {
 		log.Fatal(err)
 	}
-
-	// write data to response
-	fmt.Println("printing response")
+	args := strings.Split(string(buffer[:]), "\n")
 	responseStr := fmt.Sprintf("+PONG\r\n")
-	conn.Write([]byte(responseStr))
+	for range args {
+		// write data to response
+		conn.Write([]byte(responseStr))
+	}
 }
