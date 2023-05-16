@@ -42,7 +42,7 @@ func pingCommand(conn net.Conn) {
 	}
 	args := strings.Split(string(buffer[:]), "\n")
 	responseStr := fmt.Sprintf("+PONG\r\n")
-	for range args {
+	for i := 0; i < len(args); i++ {
 		// write data to response
 		conn.Write([]byte(responseStr))
 	}
