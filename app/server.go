@@ -20,7 +20,7 @@ func main() {
 		fmt.Println("Failed to bind to port 6379")
 		os.Exit(1)
 	}
-
+	defer l.Close()
 	for {
 		conn, err := l.Accept()
 		if err != nil {
@@ -33,6 +33,7 @@ func main() {
 
 func pingCommand(conn net.Conn) {
 	// incoming request
+	fmt.Println("incoming request")
 	buffer := make([]byte, 1024)
 	_, err := conn.Read(buffer)
 
@@ -41,6 +42,7 @@ func pingCommand(conn net.Conn) {
 	}
 
 	// write data to response
+	fmt.Println("printing response")
 	responseStr := fmt.Sprintf("+PONG\r\n")
 	conn.Write([]byte(responseStr))
 }
